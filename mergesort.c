@@ -1,4 +1,25 @@
 #include<stdio.h>
+#include<time.h>
+
+int merge(int *x, int *y,int i, int m, int f){
+    int z, ix = i, iy = m+1;
+    
+    for(z=1; z<=f; z++){
+        y[z] = x[z];
+        z = i;
+    }
+
+    while (ix<=m && iy <= f){
+        if(y[ix]<=y[iy]){
+            x[z++]= y[ix++];
+        }else{
+            x[z++] = y[iy++];
+        }
+    }
+    while (ix <= m) x[z++] = y[ix++];
+
+    while (iy <= f) x[z++] = y[iy++];
+}
 
 int sort(int *x, int *y,int i, int f){
     if(i >= f){
@@ -17,27 +38,8 @@ int sort(int *x, int *y,int i, int f){
 
 }
 
-int merge(int *x, int *y,int i, int m, int f){
-    int z, ix = i, iy = m+1;
-    
-    for(z=1;z<=f;z++){
-        y[z] = x[z];
-        z = i;
-    }
 
-    while (ix<=m && iy <= f){
-        if(y[ix]<=y[iy]){
-            x[z++]= y[ix++];
-        }else{
-            x[z++] = y[iy++];
-        }
-    }
-    while (ix <= m) x[z++] = y[ix++];
-
-    while (iy <= f) x[z++] = y[iy++];
-}
-
-int mergesort(int *x, int n){
+void mergesort(int *x, int n){
     int *y = malloc(sizeof(int)*n);
     sort(x, y, 0, n-1);
     free(y);
