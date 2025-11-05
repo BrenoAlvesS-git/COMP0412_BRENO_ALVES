@@ -17,23 +17,38 @@ se possivel tudo fechado para maior constância nos dados
 
 */
 #include<stdio.h>
-
+#include<stdlib.h>
+#include<time.h>
 void insertion(int *A, int n);
 
 int main(){
-    int arrayP[] = {6,5,4,3,2,1};//array pro pior caso
-    int arrayM[] = {1,2,3,4,5,6};//array pro melhor caso(percebi que pra essa quantidade de elementos é irrelevante pior ou melhor caso :p)
-    int tamanho = 6;
-
-    insertion(arrayP,tamanho);
-    printf("Array ordenado:\n");
-    for(int i =0; i<tamanho;i++){
-        printf("%d ", arrayP[i]);
+    int n;
+    if (scanf("%d", &n) != 1){
+        return 1;
     }
+    int *A = (int*) malloc((size_t)n * sizeof(int));
+    if (!A) {
+        return 2;
+    }
+    for (int i = 0; i < n; i++) {
+        if (scanf("%d", &A[i]) != 1) { free(A);
+             return 1;
+            }
+    }
+
+    clock_t t0 = clock();
+    insertion_sort(A, n);
+    clock_t t1 = clock();
+
+    double tempo = (double)(t1 - t0) / CLOCKS_PER_SEC;
+    printf("%.9f\n", tempo);
+
+    free(A);
+    return 0;
 
 }
 //lembrando da invariante, o algoritmo já está ordenado do indice 0 até x-1
-void insertion(int *A, int n){
+static void insertion(int *A, int n){
     for(int x = 1; x<n; x++){//entra num loop a partir do segundo elemento pois em teoria o primeiro já tá prdenado
         int lista = A[x];       //armazena o valor atual de A[posição x] 
         int i = x-1;    //cria um outro indice na possição anterior a x pra podermos ordenar
