@@ -19,9 +19,22 @@ se possivel tudo fechado para maior constância nos dados
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
-void insertion(int *A, int n);
 
-int main(){
+//lembrando da invariante, o algoritmo já está ordenado do indice 0 até x-1
+static void insertion(int *A, int n){
+    for(int x = 1; x<n; x++){//entra num loop a partir do segundo elemento pois em teoria o primeiro já tá prdenado
+        int lista = A[x];       //armazena o valor atual de A[posição x] 
+        int i = x-1;    //cria um outro indice na possição anterior a x pra podermos ordenar
+
+        while(i>=0 && A[i]> lista){//segundo loop para cumprir as duas condições que é o indice não ser invalido 
+            A[i+1] = A[i];          //copia os valores para a proxima posição
+            i=i-1;                  //move o indice para esquerda
+        }
+        A[i+1] = lista;             //insere o valor na posição correta
+    }
+}
+
+int main(void){
     int n;
     if (scanf("%d", &n) != 1){
         return 1;
@@ -37,7 +50,7 @@ int main(){
     }
 
     clock_t t0 = clock();
-    insertion_sort(A, n);
+    insertion(A, n);
     clock_t t1 = clock();
 
     double tempo = (double)(t1 - t0) / CLOCKS_PER_SEC;
@@ -46,17 +59,4 @@ int main(){
     free(A);
     return 0;
 
-}
-//lembrando da invariante, o algoritmo já está ordenado do indice 0 até x-1
-static void insertion(int *A, int n){
-    for(int x = 1; x<n; x++){//entra num loop a partir do segundo elemento pois em teoria o primeiro já tá prdenado
-        int lista = A[x];       //armazena o valor atual de A[posição x] 
-        int i = x-1;    //cria um outro indice na possição anterior a x pra podermos ordenar
-
-        while(i>=0 && A[i]> lista){//segundo loop para cumprir as duas condições que é o indice não ser invalido 
-            A[i+1] = A[i];          //copia os valores para a proxima posição
-            i=i-1;                  //move o indice para esquerda
-        }
-        A[i+1] = lista;             //insere o valor na posição correta
-    }
 }
